@@ -4,7 +4,7 @@ const extract = require('meta-extractor');
 var sw = require('stopword');
 var fs = require("fs");
 var stringSimilarity = require('string-similarity');
-var fetchUrl = require("fetch").fetchUrl;
+var fetchUrl = require("fetch").fetchUrl; 
 const {
   performance
 } = require('perf_hooks');
