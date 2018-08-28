@@ -106,11 +106,15 @@ async function getJsonFeedContent(url, provider) {
           jsonObj.link = json.cards[i].contents[0].localLinkUrl;
 
           (async () => {
-            let loopPromise = await loopRSSFeed(jsonObj, provider);
-            if (loopPromise != null){
-              fillArr.push(loopPromise);
+            try{
+              let loopPromise = await loopRSSFeed(jsonObj, provider);
+              if (loopPromise != null){
+                fillArr.push(loopPromise);
+              }
+              resolve(fillArr);
+            }catch(error){
+              reject(error);
             }
-            resolve(fillArr);
           })();
         }catch(error){
           reject("Can't fill title.")
@@ -191,7 +195,7 @@ async function createJSON(list, name, variance) {
   }
 
   let builtArr = buildSimilarArray(mergeList, variance).sort((a, b) => b.length - a.length);
-  var path = '../webserver/JSON/'
+  var path = __dirname + '/../webserver/JSON/';
   fs.writeFile(path + name, JSON.stringify(builtArr), (err) => {
     if (err) {
         console.error(err);
@@ -250,7 +254,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatodaycomwashington-topstories&x=1', 'provider': 'USA Today'}
   ];
 
-  //await createJSON(politicsArr, 'politics.json', 0.55);
+  await createJSON(politicsArr, 'politics.json', 0.55);
 
   let worldArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-intlnews', 'provider': 'AP'},
