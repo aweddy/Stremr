@@ -4,7 +4,7 @@ const extract = require('meta-extractor');
 var sw = require('stopword');
 var fs = require("fs");
 var stringSimilarity = require('string-similarity');
-var fetchUrl = require("fetch").fetchUrl; 
+const fetch = require('node-fetch'); 
 const {
   performance
 } = require('perf_hooks');
@@ -94,32 +94,25 @@ async function getJsonFeedContent(url, provider) {
     x = 0;
     let json = {};
     console.log(url);
-    fetchUrl(url, function(error, meta, body){
-      json = JSON.parse(body.toString());
-      let fillArr = [];
+    fetch(url)
+    .then(res => res.text())
+    .then(body => {
+      (async () => {
+        let json = JSON.parse(body);
+        let fillArr = [];
 
-      for (let i=0; i < json.cards.length; i++){
-        try{
+        for (let i=0; i < json.cards.length; i++){
           var jsonObj = new Object();
 
           jsonObj.title = json.cards[i].contents[0].headline;
           jsonObj.link = json.cards[i].contents[0].localLinkUrl;
-
-          (async () => {
-            try{
-              let loopPromise = await loopRSSFeed(jsonObj, provider);
-              if (loopPromise != null){
-                fillArr.push(loopPromise);
-              }
-              resolve(fillArr);
-            }catch(error){
-              reject(error);
-            }
-          })();
-        }catch(error){
-          reject("Can't fill title.")
+          if (jsonObj.link != null){
+            let loopPromise = await loopRSSFeed(jsonObj, provider);
+            fillArr.push(loopPromise);
+          }
         }
-      }
+        resolve(fillArr);
+      })();
     });
   });
 };
@@ -211,63 +204,63 @@ async function createJSON(list, name, variance) {
 
 (async () => {
   let topNewsArr = [
-    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-topnews', 'provider': 'AP'},
-    {'link': 'http://rss.cnn.com/rss/cnn_topstories.rss', 'provider': 'CNN'},
-    {'link': 'http://feeds.foxnews.com/foxnews/latest', 'provider': 'Fox'},
-    {'link': 'http://feeds.reuters.com/reuters/topNews', 'provider': 'Reuters'},
-    {'link': 'http://www.msnbc.com/feeds/latest', 'provider': 'MSNBC'},
-    {'link': 'https://abcnews.go.com/abcnews/topstories', 'provider': 'ABC'},
-    {'link': 'https://www.cbsnews.com/latest/rss/main', 'provider': 'CBS'},
-    {'link': 'https://www.cnbc.com/id/100003114/device/rss/rss.html', 'provider': 'CNBC'},
-    {'link': 'http://thehill.com/rss/syndicator/19110', 'provider': 'The Hill'},
-    {'link': 'http://rssfeeds.usatoday.com/usatoday-newstopstories&x=1', 'provider': 'USA Today'}
+    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-topnews', 'provider': 'AP'}//,
+    // {'link': 'http://rss.cnn.com/rss/cnn_topstories.rss', 'provider': 'CNN'},
+    // {'link': 'http://feeds.foxnews.com/foxnews/latest', 'provider': 'Fox'},
+    // {'link': 'http://feeds.reuters.com/reuters/topNews', 'provider': 'Reuters'},
+    // {'link': 'http://www.msnbc.com/feeds/latest', 'provider': 'MSNBC'},
+    // {'link': 'https://abcnews.go.com/abcnews/topstories', 'provider': 'ABC'},
+    // {'link': 'https://www.cbsnews.com/latest/rss/main', 'provider': 'CBS'},
+    // {'link': 'https://www.cnbc.com/id/100003114/device/rss/rss.html', 'provider': 'CNBC'},
+    // {'link': 'http://thehill.com/rss/syndicator/19110', 'provider': 'The Hill'},
+    // {'link': 'http://rssfeeds.usatoday.com/usatoday-newstopstories&x=1', 'provider': 'USA Today'}
   ];
 
   createJSON(topNewsArr, 'topNews.json', 0.50);
     
   let usNewsArr = [
-    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-usnews', 'provider': 'AP'},
-    {'link': 'http://rss.cnn.com/rss/cnn_us.rss', 'provider': 'CNN'},
-    {'link': 'http://feeds.foxnews.com/foxnews/national', 'provider':'Fox'},
-    {'link': 'https://www.cnbc.com/id/15837362/device/rss/rss.html', 'provider': 'CNBC'},
-    {'link': 'https://abcnews.go.com/abcnews/usheadlines', 'provider': 'ABC'},
-    {'link': 'http://feeds.reuters.com/Reuters/domesticNews', 'provider': 'Reuters'},
-    {'link': 'https://www.cbsnews.com/latest/rss/us', 'provider': 'CBS'},
-    {'link': 'http://rssfeeds.usatoday.com/usatodaycomnation-topstories&x=1', 'provider': 'USA Today'},
-    {'link': 'http://feeds.washingtonpost.com/rss/national', 'provider': 'Washington Post'},
-    {'link': 'http://rss.nytimes.com/services/xml/rss/nyt/US.xml', 'provider': 'NY Times'}
+    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-usnews', 'provider': 'AP'}//,
+    // {'link': 'http://rss.cnn.com/rss/cnn_us.rss', 'provider': 'CNN'},
+    // {'link': 'http://feeds.foxnews.com/foxnews/national', 'provider':'Fox'},
+    // {'link': 'https://www.cnbc.com/id/15837362/device/rss/rss.html', 'provider': 'CNBC'},
+    // {'link': 'https://abcnews.go.com/abcnews/usheadlines', 'provider': 'ABC'},
+    // {'link': 'http://feeds.reuters.com/Reuters/domesticNews', 'provider': 'Reuters'},
+    // {'link': 'https://www.cbsnews.com/latest/rss/us', 'provider': 'CBS'},
+    // {'link': 'http://rssfeeds.usatoday.com/usatodaycomnation-topstories&x=1', 'provider': 'USA Today'},
+    // {'link': 'http://feeds.washingtonpost.com/rss/national', 'provider': 'Washington Post'},
+    // {'link': 'http://rss.nytimes.com/services/xml/rss/nyt/US.xml', 'provider': 'NY Times'}
   ];
 
   await createJSON(usNewsArr, 'usNews.json', 0.55);
 
   let politicsArr = [
-    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-politics', 'provider': 'AP'},
-    {'link': 'http://rss.cnn.com/rss/cnn_allpolitics.rss', 'provider': 'CNN'},
-    {'link': 'http://feeds.foxnews.com/foxnews/politics', 'provider': 'Fox'},
-    {'link': 'https://www.politico.com/rss/politics08.xml', 'provider': 'Politico'},
-    {'link': 'http://feeds.washingtonpost.com/rss/politics', 'provider': 'Washington Post'},
-    {'link': 'https://www.nationalreview.com/feed/', 'provider': 'National Review'},
-    {'link': 'https://www.cnbc.com/id/10000113/device/rss/rss.html', 'provider': 'CNBC'},
-    {'link': 'https://abcnews.go.com/abcnews/politicsheadlines', 'provider': 'ABC'},
-    {'link': 'http://feeds.reuters.com/Reuters/PoliticsNews', 'provider': 'Reuters'},
-    {'link': 'https://www.cbsnews.com/latest/rss/politics', 'provider': 'CBS'},
-    {'link': 'http://rssfeeds.usatoday.com/usatodaycomwashington-topstories&x=1', 'provider': 'USA Today'}
+    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-politics', 'provider': 'AP'}//,
+    // {'link': 'http://rss.cnn.com/rss/cnn_allpolitics.rss', 'provider': 'CNN'},
+    // {'link': 'http://feeds.foxnews.com/foxnews/politics', 'provider': 'Fox'},
+    // {'link': 'https://www.politico.com/rss/politics08.xml', 'provider': 'Politico'},
+    // {'link': 'http://feeds.washingtonpost.com/rss/politics', 'provider': 'Washington Post'},
+    // {'link': 'https://www.nationalreview.com/feed/', 'provider': 'National Review'},
+    // {'link': 'https://www.cnbc.com/id/10000113/device/rss/rss.html', 'provider': 'CNBC'},
+    // {'link': 'https://abcnews.go.com/abcnews/politicsheadlines', 'provider': 'ABC'},
+    // {'link': 'http://feeds.reuters.com/Reuters/PoliticsNews', 'provider': 'Reuters'},
+    // {'link': 'https://www.cbsnews.com/latest/rss/politics', 'provider': 'CBS'},
+    // {'link': 'http://rssfeeds.usatoday.com/usatodaycomwashington-topstories&x=1', 'provider': 'USA Today'}
   ];
 
   await createJSON(politicsArr, 'politics.json', 0.55);
 
   let worldArr = [
-    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-intlnews', 'provider': 'AP'},
-    {'link': 'http://feeds.bbci.co.uk/news/world/rss.xml', 'provider': 'BBC'},
-    {'link': 'https://www.huffingtonpost.com/section/world-news/feed', 'provider': 'HuffPo'},
-    {'link': 'http://feeds.reuters.com/Reuters/WorldNews', 'provider': 'Reuters'},
-    {'link': 'http://rss.cnn.com/rss/cnn_world.rss', 'provider': 'CNN'},
-    {'link': 'http://feeds.foxnews.com/foxnews/world', 'provider': 'Fox'},
-    {'link': 'http://feeds.washingtonpost.com/rss/world', 'provider': 'Washington Post'},
-    {'link': 'https://www.cnbc.com/id/100727362/device/rss/rss.html', 'provider': 'CNBC'},
-    {'link': 'https://abcnews.go.com/abcnews/internationalheadlines', 'provider': 'ABC'},
-    {'link': 'https://www.cbsnews.com/latest/rss/world', 'provider': 'CBS'},
-    {'link': 'http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories', 'provider': 'USA Today'}
+    {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-intlnews', 'provider': 'AP'}//,
+    // {'link': 'http://feeds.bbci.co.uk/news/world/rss.xml', 'provider': 'BBC'},
+    // {'link': 'https://www.huffingtonpost.com/section/world-news/feed', 'provider': 'HuffPo'},
+    // {'link': 'http://feeds.reuters.com/Reuters/WorldNews', 'provider': 'Reuters'},
+    // {'link': 'http://rss.cnn.com/rss/cnn_world.rss', 'provider': 'CNN'},
+    // {'link': 'http://feeds.foxnews.com/foxnews/world', 'provider': 'Fox'},
+    // {'link': 'http://feeds.washingtonpost.com/rss/world', 'provider': 'Washington Post'},
+    // {'link': 'https://www.cnbc.com/id/100727362/device/rss/rss.html', 'provider': 'CNBC'},
+    // {'link': 'https://abcnews.go.com/abcnews/internationalheadlines', 'provider': 'ABC'},
+    // {'link': 'https://www.cbsnews.com/latest/rss/world', 'provider': 'CBS'},
+    // {'link': 'http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories', 'provider': 'USA Today'}
   ];
 
   await createJSON(worldArr, 'world.json', 0.55);
