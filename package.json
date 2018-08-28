@@ -2,7 +2,7 @@
   "name": "stremr",
   "version": "1.0.0",
   "description": "stremr poc",
-  "main": "stremrEngine.js",
+  "main": "eng/stremrEngine.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/aweddy/Stremr/issues"
   },
-  "homepage": "https://github.com/aweddy/Stremr#readme"
+  "homepage": "https://github.com/aweddy/Stremr#readme",
+  "dependencies": {
+    "fetch": "^1.1.0",
+    "meta-extractor": "^1.4.0",
+    "perf_hooks": "0.0.1",
+    "rss-parser": "^3.4.3",
+    "stopword": "^0.1.10",
+    "string-similarity": "^1.2.1"
+  }
 }
