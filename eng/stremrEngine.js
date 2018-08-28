@@ -99,18 +99,22 @@ async function getJsonFeedContent(url, provider) {
       let fillArr = [];
 
       for (let i=0; i < json.cards.length; i++){
-        var jsonObj = new Object();
+        try{
+          var jsonObj = new Object();
 
-        jsonObj.title = json.cards[i].contents[0].headline;
-        jsonObj.link = json.cards[i].contents[0].localLinkUrl;
+          jsonObj.title = json.cards[i].contents[0].headline;
+          jsonObj.link = json.cards[i].contents[0].localLinkUrl;
 
-        (async () => {
-          let loopPromise = await loopRSSFeed(jsonObj, provider);
-          if (loopPromise != null){
-            fillArr.push(loopPromise);
-          }
-          resolve(fillArr);
-        })();
+          (async () => {
+            let loopPromise = await loopRSSFeed(jsonObj, provider);
+            if (loopPromise != null){
+              fillArr.push(loopPromise);
+            }
+            resolve(fillArr);
+          })();
+        }catch(error){
+          reject("Can't fill title.")
+        }
       }
     });
   });
@@ -187,8 +191,8 @@ async function createJSON(list, name, variance) {
   }
 
   let builtArr = buildSimilarArray(mergeList, variance).sort((a, b) => b.length - a.length);
-
-  fs.writeFile(name, JSON.stringify(builtArr), (err) => {
+  var path = '../webserver/JSON/'
+  fs.writeFile(path + name, JSON.stringify(builtArr), (err) => {
     if (err) {
         console.error(err);
         return;
