@@ -6,6 +6,6 @@ import NewsList from './components/NewsList';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<NewsList subreddit="news"/>, document.getElementById('list'));
+ReactDOM.render(<NewsList category="topNews"/>, document.getElementById('list'));
 
 registerServiceWorker();
