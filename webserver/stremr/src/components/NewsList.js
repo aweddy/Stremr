@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import fetch from 'node-fetch';
-//import ReactDOM from 'react-dom';
+//import './App.css';
 import axios from 'axios';
 
-class FetchDemo extends Component {
+class NewsList extends Component {
   state = {
     posts: []
   }
@@ -31,4 +29,4 @@ class FetchDemo extends Component {
   }
 }
 
-export default FetchDemo;
+export default NewsList;
