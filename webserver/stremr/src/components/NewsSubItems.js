@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 //import './App.css';
-import axios from 'axios';
 
 export default class NewsSubItems extends Component {
 
@@ -15,7 +14,7 @@ export default class NewsSubItems extends Component {
   }
 
   _ToggleNext() {
-      if(this.state.selectedIndex == this.state.articles.length - 1)
+      if(this.state.selectedIndex === this.state.articles.length - 1)
           return;
 
       this.setState(prevState => ({
@@ -24,7 +23,7 @@ export default class NewsSubItems extends Component {
   }
 
   _TogglePrev() {
-      if(this.state.selectedIndex == 0)
+      if(this.state.selectedIndex === 0)
        return;
 
       this.setState(prevState => ({
