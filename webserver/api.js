@@ -1,8 +1,4 @@
-var app = require('express')(),
-var fs = require('fs');
-
-// This is where all the magic happens!
-app.engine('html', swig.renderFile);
+var app = require('express')(),fs = require('fs');
 
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
