@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import './App.css';
 import axios from 'axios';
+import NewsSubItems from './NewsSubItems';
 
 class NewsList extends Component {
   state = {
@@ -16,23 +17,17 @@ class NewsList extends Component {
   }
 
   render() { 
-    return <ul>
-    {
+    return (
       this.state.posts.map((item, index) => {
         return (
-          <li><ul>
+          <li key={index}>
           {
-          item.map((subitem, i) => {
-            return (
-                <li>{subitem.title}</li>
-            )
-          })
+            <NewsSubItems items={item} />
           }
-          </ul></li>
+          </li>
         )
       })
-    }  
-    </ul>;
+    )
   }
 }
 
