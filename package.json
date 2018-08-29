@@ -28,6 +28,7 @@
     "perf_hooks": "0.0.1",
     "rss-parser": "^3.4.3",
     "stopword": "^0.1.10",
-    "string-similarity": "^1.2.1"
+    "string-similarity": "^1.2.1",
+    "swig": "^1.4.2"
   }
 }
