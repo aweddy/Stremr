@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+library.add(faGlobeAmericas)
+library.add(faNewspaper)
+library.add(faArrowUp)
+library.add(faMapPin)
 
 class App extends Component {
   render() {
@@ -10,8 +18,17 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">STREMR</h1>
         </header>
-        <ul id="topNews"></ul>
-        <ul id="politics"></ul>
+        <div id="newsSelect">
+          <ul>
+            <li><FontAwesomeIcon icon="arrow-up" />Top News</li>
+            <li><FontAwesomeIcon icon="map-pin" />US News</li>
+            <li><FontAwesomeIcon icon="globe-americas" />World News</li>
+          </ul>
+        </div>
+        <div id="newsList">
+          <ul id="topNews"></ul>
+          <ul id="politics"></ul>
+        </div>
       </div>
     );
   }

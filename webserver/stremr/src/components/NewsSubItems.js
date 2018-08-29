@@ -4,43 +4,45 @@ import React, { Component } from 'react';
 export default class NewsSubItems extends Component {
 
   constructor(props) {
-      super(props);
-      this.state = {
-          articles: props.items,
-          selectedIndex: 0
-      }
-      this._TogglePrev = this._TogglePrev.bind(this);
-      this._ToggleNext = this._ToggleNext.bind(this);
+    super(props);
+    this.state = {
+        articles: props.items,
+        selectedIndex: 0
+    }
+    this._TogglePrev = this._TogglePrev.bind(this);
+    this._ToggleNext = this._ToggleNext.bind(this);
   }
 
   _ToggleNext() {
-      if(this.state.selectedIndex === this.state.articles.length - 1)
-          return;
+    if(this.state.selectedIndex === this.state.articles.length - 1)
+      return;
 
-      this.setState(prevState => ({
-          selectedIndex: prevState.selectedIndex + 1
-      }))
+    this.setState(prevState => ({
+      selectedIndex: prevState.selectedIndex + 1
+    }))
   }
 
   _TogglePrev() {
-      if(this.state.selectedIndex === 0)
-       return;
+    if(this.state.selectedIndex === 0)
+      return;
 
-      this.setState(prevState => ({
-          selectedIndex: prevState.selectedIndex - 1
-      }))
+    this.setState(prevState => ({
+      selectedIndex: prevState.selectedIndex - 1
+    }))
   }
 
   render() {
-      let {selectedIndex, articles} = this.state;
-      return (
-           <div className="articleBlock" style={{width: '100%', height: '100%'}}>
-              <div>{articles[selectedIndex].title}</div>
-              <div className="controls">
-                <button className="toggle toggle--prev" onClick={this._TogglePrev}>Prev</button>
-                <button className="toggle toggle--next" onClick={this._ToggleNext}>Next</button>
-              </div>
-           </div>
-      )
+    let {selectedIndex, articles} = this.state;
+    return (
+      <div className="articleBlock" style={{width: '100%', height: '100%'}}>
+        <div className="img"><img src={articles[selectedIndex].metadata.ogImage} /></div>
+        <div className="title"><a href={articles[selectedIndex].link}>{articles[selectedIndex].title}</a></div>
+        <div className="description">{articles[selectedIndex].metadata.description}</div>
+        <div className="controls">
+          <button className="toggle toggle--prev" onClick={this._TogglePrev}>Prev</button>
+          <button className="toggle toggle--next" onClick={this._ToggleNext}>Next</button>
+        </div>
+      </div>
+    )
   }
 }
