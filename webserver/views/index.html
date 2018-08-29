@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}My Page{% endblock %}
+{% block title %}Stremr{% endblock %}
 
 {% block head %}
   {% parent %}
@@ -8,5 +8,18 @@
 {% endblock %}
 
 {% block content %}
-<p>This is just an awesome page.</p>
+<p>Articles:</p>
+<ul>
+    {% for articleSet in articles %}
+        <li{% if loop.first %} class="first"{% endif %}>
+            <ul>
+                {% for article in articleSet %}
+                <li>
+                    {{ article.title }}
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}
