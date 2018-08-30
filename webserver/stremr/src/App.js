@@ -16,13 +16,15 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">STREMR</h1>
+          <h1 className="App-title">Stremr</h1>
         </header>
         <div id="newsSelect">
           <ul>
-            <li><FontAwesomeIcon icon="arrow-up" />Top News</li>
-            <li><FontAwesomeIcon icon="map-pin" />US News</li>
-            <li><FontAwesomeIcon icon="globe-americas" />World News</li>
+            <li className="top"><FontAwesomeIcon icon="arrow-up" />Top News</li>
+            <li className="us"><FontAwesomeIcon icon="map-pin" />US News</li>
+            <li className="world"><FontAwesomeIcon icon="globe-americas" />World News</li>
+            <li className="politics"><FontAwesomeIcon icon="globe-americas" />Politics</li>
+            <li className="sports"><FontAwesomeIcon icon="globe-americas" />Sports</li>
           </ul>
         </div>
         <div id="newsList">

@@ -7,7 +7,7 @@ export default class NewsSubItems extends Component {
     super(props);
     this.state = {
         articles: props.items,
-        selectedIndex: 0
+        selectedIndex: 0,
     }
     this._TogglePrev = this._TogglePrev.bind(this);
     this._ToggleNext = this._ToggleNext.bind(this);
@@ -22,6 +22,12 @@ export default class NewsSubItems extends Component {
     }))
   }
 
+  _ToggleSelected(num) {
+    this.setState(prevState => ({
+      selectedIndex: num
+    }))
+  }
+
   _TogglePrev() {
     if(this.state.selectedIndex === 0)
       return;
@@ -33,15 +39,27 @@ export default class NewsSubItems extends Component {
 
   render() {
     let {selectedIndex, articles} = this.state;
+    const providerList = articles.map((pro, index) => <li key={index} className={this.state.selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider}</span></li>);
     return (
-      <div className="articleBlock" style={{width: '100%', height: '100%'}}>
-        <div className="img"><img src={articles[selectedIndex].metadata.ogImage} /></div>
-        <div className="title"><a href={articles[selectedIndex].link}>{articles[selectedIndex].title}</a></div>
-        <div className="description">{articles[selectedIndex].metadata.description}</div>
-        <div className="controls">
-          <button className="toggle toggle--prev" onClick={this._TogglePrev}>Prev</button>
-          <button className="toggle toggle--next" onClick={this._ToggleNext}>Next</button>
+      <div className='articleBlock'>
+        {/* <div id='left' onClick={this._TogglePrev}></div>
+        <div id='right' onClick={this._ToggleNext}></div> */}
+        <div className="articleBlockMain" style={{width: '100%', height: '100%'}}>
+          <div className="img">
+            <img src={articles[selectedIndex].metadata.ogImage} />
+          </div>
+          <div className="content">
+            <div className="title"><a href={articles[selectedIndex].link}>{articles[selectedIndex].title}</a></div>
+            <div className="description">{articles[selectedIndex].metadata.description}</div>
+            <div className="providers">
+              <ul>
+                {providerList}
+              </ul>
+            </div>
+          </div>
+          <div className="bias"></div>
         </div>
+        <div style={{clear: 'both'}}></div>
       </div>
     )
   }

@@ -1,7 +1,7 @@
 let Parser = require('rss-parser');
 let parser = new Parser();
 const extract = require('meta-extractor');
-var sw = require('stopword');
+var keyword_extractor = require("keyword-extractor");
 var fs = require("fs");
 var stringSimilarity = require('string-similarity');
 const fetch = require('node-fetch'); 
@@ -9,12 +9,14 @@ const {
   performance
 } = require('perf_hooks');
 
-const replaceStr = (str, wrd) => {
-  wrd = wrd.toLowerCase();
-  str = str.toLowerCase();
-  var regex = new RegExp(wrd, "g");
-  return str.replace(regex, " ");
-}
+Array.prototype.removeIf = function(str) {
+  var i = this.length;
+  while (i--) {
+    if (this[i] === str) {
+        this.splice(i, 1);
+    }
+  }
+};
 
 async function loopRSSFeed (item, provider) {
   return new Promise((resolve, reject) => {
@@ -39,12 +41,25 @@ async function loopRSSFeed (item, provider) {
         {
           cleanStr += res.ogTitle.trim();
         }
-        result.cleanedCompare = sw.removeStopwords(cleanStr.split(' ')).join(' ');
-        result.cleanedCompare = replaceStr(result.cleanedCompare, 'cnnpolitics');
-        result.cleanedCompare = replaceStr(result.cleanedCompare, 'donald trump');
-        result.cleanedCompare = replaceStr(result.cleanedCompare, 'abc news');
-        result.cleanedCompare = replaceStr(result.cleanedCompare, '- cnn video');
-        result.cleanedCompare = replaceStr(result.cleanedCompare, 'president');
+        if (cleanStr === '')
+        {
+          reject("No title or description detected.")
+        }
+
+        result.tags = keyword_extractor.extract(cleanStr,{
+          language:"english",
+          remove_digits: true,
+          return_changed_case:true,
+          remove_duplicates: true
+        });
+
+        result.tags.removeIf("-");
+        result.tags.removeIf("--");
+        result.tags.removeIf("ap");
+        result.tags.removeIf("cnn video");
+        result.tags.removeIf("|");
+
+        result.cleanedCompare = result.tags.join(' ');
 
         console.log('---------------------+Metadata+---------------------');
         console.log("Getting additional info for:" + result.link);
@@ -56,7 +71,6 @@ async function loopRSSFeed (item, provider) {
 
         resolve(result)
       }).catch(err => {console.error(err)
-        //result.cleanedCompare = sw.removeStopwords(cleanStr.split(' ')).join(' ');
         console.log(err);
         resolve(result);
       });

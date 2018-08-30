@@ -6,17 +6,20 @@
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40px;
+  display:inline-block;
 }
 
 .App-header {
   background-color: #222;
-  height: 100px;
-  padding: 20px;
+  height: 50px;
   color: white;
+  display:flex;
+  padding-top:10px;
 }
 
 .App-title {
-  font-size: 1.5em;
+  display:inline-flex;
+  margin-top:5px;
 }
 
 .App-intro {
@@ -33,11 +36,15 @@
 #newsSelect ul li{
   display: inline-block;
   margin: 5px;
-  border: 1px solid #61DAFB;
   border-radius: 10px;
+  color:white;
   padding:5px;
   background-color:rgb(65, 162, 189);
 }
+#newsSelect ul li.top{
+  background-color:rgb(214, 0, 29);
+}
+
 
 #newsSelect ul li svg{
   margin-right:5px;
@@ -52,25 +59,79 @@
 
 #newsList ul li{
   display: block;
-  border: 1px solid black;
-  margin: 0px 15px;
-  padding: 5px;
+  border-bottom: 1px solid #222;
+  /*margin: 0px 15px 0px 15px;*/
+  padding: 0px;
   background-color: white;
 }
 
-div.articleBlock div.img img{
-  width:100px;
+div.articleBlockMain{
+  display:flex;
+  position: relative;
+}
+
+div.articleBlockMain .content{
+  padding:5px;
+  display:block;
+}
+
+div.articleBlockMain div.img{
+  display:block;
+}
+
+div.articleBlockMain div.bias{
+  position: absolute;
+  background-color: #ccc;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  display: block;
+}
+
+div.articleBlockMain div.img img{
+  width:130px;
   float:left;
   margin-right:10px;
 }
 
-div.articleBlock div.title{
+div.articleBlockMain div.title{
   text-align: left;
 }
 
-div.articleBlock div.description{
+div.articleBlockMain div.title a{
+  color: #222
+}
+
+div.articleBlockMain div.description{
   text-align: left;
-  font-size: smaller;
+  font-size: x-small;
+}
+
+#newsList div.articleBlock div.providers{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+#newsList div.articleBlock div.providers ul li{
+  float:left;
+  border:none;
+  display: block;
+  margin: 0;
+  padding-right: 2px;
+  color:#222;
+}
+
+#newsList div.articleBlock div.providers ul li.selected{
+  border-bottom: 3px solid #222;
+}
+
+div.articleBlock div.providers li span{
+  display: block;
+  font-size: x-small;
+  padding:10px;
+  height:7px;
 }
 
 @keyframes App-logo-spin {
