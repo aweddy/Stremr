@@ -18,6 +18,12 @@ Array.prototype.removeIf = function(str) {
   }
 };
 
+function remove_duplicates(arr) {
+  let s = new Set(arr);
+  let it = s.values();
+  return Array.from(it);
+}
+
 async function loopRSSFeed (item, provider) {
   return new Promise((resolve, reject) => {
     var result = new Object();
@@ -58,6 +64,9 @@ async function loopRSSFeed (item, provider) {
         result.tags.removeIf("ap");
         result.tags.removeIf("cnn video");
         result.tags.removeIf("|");
+        result.tags.removeIf("donald");
+        result.tags.removeIf("trump");
+        result.tags.removeIf("latest");
 
         result.cleanedCompare = result.tags.join(' ');
 
@@ -91,9 +100,13 @@ async function getRssFeedContent(url, provider) {
       let fillArr = [];
       //console.log(feed.items.length);
       for (let i=0; i < len; i++){
-        let loopPromise = await loopRSSFeed(feed.items[i], provider);
-        if (loopPromise != null){
-          fillArr.push(loopPromise);
+        try{
+          let loopPromise = await loopRSSFeed(feed.items[i], provider);
+          if (loopPromise != null){
+            fillArr.push(loopPromise);
+          }
+        }catch(error){
+          console.log(error);
         }
       }
       console.log('...Ending ' + provider + '...');
@@ -112,13 +125,16 @@ async function getJsonFeedContent(url, provider) {
         let fillArr = [];
 
         for (let i=0; i < json.cards.length; i++){
+          try{
           var jsonObj = new Object();
-
-          jsonObj.title = json.cards[i].contents[0].headline;
-          jsonObj.link = json.cards[i].contents[0].localLinkUrl;
-          if (jsonObj.link != null){
-            let loopPromise = await loopRSSFeed(jsonObj, provider);
-            fillArr.push(loopPromise);
+            jsonObj.title = json.cards[i].contents[0].headline;
+            jsonObj.link = json.cards[i].contents[0].localLinkUrl;
+            if (jsonObj.link != null){
+              let loopPromise = await loopRSSFeed(jsonObj, provider);
+              fillArr.push(loopPromise);
+            }
+          }catch(error){
+            console.log(error);
           }
         }
         console.log('...Ending ' + provider + '...');
@@ -128,15 +144,18 @@ async function getJsonFeedContent(url, provider) {
   });
 };
 
-const buildSimilarArray = function (arr, variance) {
+const buildSArticleListObj = function (arr, variance) {
   let builtArr = [], usedElem = [];
 
   for (let i = 0; i<arr.length; i++){
     let currNode = [];
+    let tagsList = [];
     if (usedElem.indexOf(i) == -1){
       let elem = arr[i];
       currNode.push(elem);
       
+      tagsList = tagsList.concat(elem.tags);
+
       console.log('--------------+Searching for Similar+--------------');
       console.log(elem.title + ' (' + elem.provider + ')');
       console.log(elem.cleanedCompare);
@@ -160,7 +179,8 @@ const buildSimilarArray = function (arr, variance) {
               console.log('---------------------------------------------------');
 
               usedElem.push(j);
-              currNode.push(compare);          
+              currNode.push(compare);
+              tagsList = tagsList.concat(compare.tags);        
             }
           }catch(error){
             console.log("Could not compare: " + error);
@@ -169,9 +189,17 @@ const buildSimilarArray = function (arr, variance) {
       }
     }
     if (currNode.length > 1){
-      builtArr.push(currNode);
+      tagsList = remove_duplicates(tagsList);
+      var obj = {
+        tags: tagsList,
+        providers: [],
+        nodes: currNode
+      }
+      builtArr.push(obj);
     }
   }
+  builtArr.sort((a, b) => b.nodes.length - a.nodes.length);
+
   return builtArr;
 }
 
@@ -192,9 +220,9 @@ async function createJSON(list, name, variance) {
     }
   }
 
-  let builtArr = buildSimilarArray(mergeList, variance).sort((a, b) => b.length - a.length);
+  let builtObj = buildSArticleListObj(mergeList, variance);
   var path = __dirname + '/../webserver/JSON/';
-  fs.writeFile(path + name, JSON.stringify(builtArr), (err) => {
+  fs.writeFile(path + name, JSON.stringify(builtObj), (err) => {
     if (err) {
         console.error(err);
         return;
@@ -269,4 +297,17 @@ async function createJSON(list, name, variance) {
   ];
 
   createJSON(worldArr, 'world.json', 0.55);
+
+  let sportsArr = [
+    {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
+    {'link': 'http://www.si.com/rss/si_topstories.rss', 'provider': 'SI'},
+    {'link': 'https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU', 'provider': 'FoxSports'},
+    {'link': 'http://feeds.feedburner.com/sportsblogs/sbnation.xml', 'provider': 'SBNation'},
+    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CBSSports'},
+    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CNNSports'},
+    {'link': 'https://sports.yahoo.com/rss/', 'provider': 'Yahoo'},
+    {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
+  ];
+
+  createJSON(sportsArr, 'sports.json', 0.5);
 })();
