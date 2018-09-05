@@ -6,7 +6,8 @@ export default class NewsSubItems extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        articles: props.items,
+        fullSet: props.items,
+        articles: props.items.nodes,
         selectedIndex: 0,
     }
     this._TogglePrev = this._TogglePrev.bind(this);

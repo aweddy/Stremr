@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #000000
+  background-color: #f5f5f5;
 }
 
 .App-logo {
@@ -59,8 +59,7 @@
 
 #newsList ul li{
   display: block;
-  border-bottom: 1px solid #222;
-  /*margin: 0px 15px 0px 15px;*/
+  margin: 0px 15px 10px 15px;
   padding: 0px;
   background-color: white;
 }
@@ -68,6 +67,8 @@
 div.articleBlockMain{
   display:flex;
   position: relative;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+  transition: box-shadow 83ms;
 }
 
 div.articleBlockMain .content{

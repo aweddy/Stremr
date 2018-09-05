@@ -25,6 +25,7 @@
     "fetch": "^1.1.0",
     "keyword-extractor": "0.0.15",
     "meta-extractor": "^1.4.0",
+    "mongoose": "^5.2.13",
     "node-fetch": "^2.2.0",
     "perf_hooks": "0.0.1",
     "rss-parser": "^3.4.3",

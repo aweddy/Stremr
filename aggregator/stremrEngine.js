@@ -3,7 +3,6 @@ let parser = new Parser();
 const extract = require('meta-extractor');
 var keyword_extractor = require("keyword-extractor");
 var fs = require("fs");
-var stringSimilarity = require('string-similarity');
 const fetch = require('node-fetch'); 
 const {
   performance
@@ -18,19 +17,70 @@ Array.prototype.removeIf = function(str) {
   }
 };
 
-function remove_duplicates(arr) {
+const remove_duplicates = (arr) => {
   let s = new Set(arr);
   let it = s.values();
   return Array.from(it);
+}
+
+const returnDupes = (arr) => {
+  results = arr.filter(function(itm, i){
+      return arr.lastIndexOf(itm)== i && arr.indexOf(itm)!= i;
+  });
+  return results;
+}
+
+var findCommonElements = function(arrs) {
+  var resArr = [];
+  for (var i = arrs[0].length - 1; i > 0; i--) {
+      for (var j = arrs.length - 1; j > 0; j--) {
+          if (arrs[j].indexOf(arrs[0][i]) == -1) {
+              break;
+          }
+      }
+      if (j === 0) {
+          resArr.push(arrs[0][i]);
+      }
+  }
+  return resArr;
+}
+
+const diceCoefficient = (l, r) => {
+  if (l.length < 2 || r.length < 2) return 0;
+
+  let lBigrams = new Map();
+  for (let i = 0; i < l.length - 1; i++) {
+    const bigram = l.substr(i, 2);
+    const count = lBigrams.has(bigram)
+      ? lBigrams.get(bigram) + 1
+      : 1;
+
+    lBigrams.set(bigram, count);
+  };
+
+  let intersectionSize = 0;
+  for (let i = 0; i < r.length - 1; i++) {
+    const bigram = r.substr(i, 2);
+    const count = lBigrams.has(bigram)
+      ? lBigrams.get(bigram)
+      : 0;
+
+    if (count > 0) {
+      lBigrams.set(bigram, count - 1);
+      intersectionSize++;
+    }
+  }
+
+  return (2.0 * intersectionSize) / (l.length + r.length - 2);
 }
 
 async function loopRSSFeed (item, provider) {
   return new Promise((resolve, reject) => {
     var result = new Object();
 
-    result.title = item.title;
+    result.title = item.title.trim();
     result.provider = provider;
-    result.link = item.link;
+    result.link = item.link.trim();
     //console.log(item);
 
     if (item.link == null){
@@ -59,7 +109,8 @@ async function loopRSSFeed (item, provider) {
           remove_duplicates: true
         });
 
-        result.tags.removeIf("-");
+        result.tags.removeIf('-');
+        result.tags.removeIf('—');
         result.tags.removeIf("--");
         result.tags.removeIf("ap");
         result.tags.removeIf("cnn video");
@@ -154,7 +205,7 @@ const buildSArticleListObj = function (arr, variance) {
       let elem = arr[i];
       currNode.push(elem);
       
-      tagsList = tagsList.concat(elem.tags);
+      tagsList.push(elem.tags);
 
       console.log('--------------+Searching for Similar+--------------');
       console.log(elem.title + ' (' + elem.provider + ')');
@@ -166,7 +217,7 @@ const buildSArticleListObj = function (arr, variance) {
         let compare = arr[j];
         if (i !== j && usedElem.indexOf(j) == -1 && currNode.indexOf(compare) == -1){
           try{
-            let threshold = stringSimilarity.compareTwoStrings(elem.cleanedCompare, compare.cleanedCompare);
+            let threshold = diceCoefficient(elem.cleanedCompare, compare.cleanedCompare);
             if (threshold > variance)
             {
               console.log('--------------+Found Similar ('+ threshold +')+----------------');
@@ -189,9 +240,9 @@ const buildSArticleListObj = function (arr, variance) {
       }
     }
     if (currNode.length > 1){
-      tagsList = remove_duplicates(tagsList);
       var obj = {
-        tags: tagsList,
+        combinedTags: tagsList,
+        commentTags: findCommonElements(tagsList),
         providers: [],
         nodes: currNode
       }
@@ -249,7 +300,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatoday-newstopstories&x=1', 'provider': 'USA Today'}
   ];
 
-  createJSON(topNewsArr, 'topNews.json', 0.50);
+  createJSON(topNewsArr, 'topNews.json', 0.52);
     
   let usNewsArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-usnews', 'provider': 'AP'},
@@ -310,4 +361,17 @@ async function createJSON(list, name, variance) {
   ];
 
   createJSON(sportsArr, 'sports.json', 0.5);
+
+  let techArr = [
+    {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
+    {'link': 'http://www.si.com/rss/si_topstories.rss', 'provider': 'SI'},
+    {'link': 'https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU', 'provider': 'FoxSports'},
+    {'link': 'http://feeds.feedburner.com/sportsblogs/sbnation.xml', 'provider': 'SBNation'},
+    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CBSSports'},
+    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CNNSports'},
+    {'link': 'https://sports.yahoo.com/rss/', 'provider': 'Yahoo'},
+    {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
+  ];
+
+  createJSON(techArr, 'technology.json', 0.5);
 })();
