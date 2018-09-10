@@ -16,17 +16,17 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Stremr</h1>
+          <h1 className="App-title">stremr</h1>
         </header>
-        <div id="newsSelect">
+        {/* <div id="newsSelect">
           <ul>
-            <li className="top"><FontAwesomeIcon icon="arrow-up" />Top News</li>
-            <li className="us"><FontAwesomeIcon icon="map-pin" />US News</li>
-            <li className="world"><FontAwesomeIcon icon="globe-americas" />World News</li>
+            <li className="top"><FontAwesomeIcon icon="arrow-up" />Top</li>
+            <li className="us"><FontAwesomeIcon icon="map-pin" />US</li>
+            <li className="world"><FontAwesomeIcon icon="globe-americas" />World</li>
             <li className="politics"><FontAwesomeIcon icon="globe-americas" />Politics</li>
             <li className="sports"><FontAwesomeIcon icon="globe-americas" />Sports</li>
           </ul>
-        </div>
+        </div> */}
         <div id="newsList">
           <ul id="topNews"></ul>
           <ul id="politics"></ul>

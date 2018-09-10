@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 //import './App.css';
 
 export default class NewsSubItems extends Component {
@@ -7,6 +8,7 @@ export default class NewsSubItems extends Component {
     super(props);
     this.state = {
         fullSet: props.items,
+        bias: props.bias,
         articles: props.items.nodes,
         selectedIndex: 0,
     }
@@ -39,15 +41,29 @@ export default class NewsSubItems extends Component {
   }
 
   render() {
-    let {selectedIndex, articles} = this.state;
-    const providerList = articles.map((pro, index) => <li key={index} className={this.state.selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider}</span></li>);
+    let {selectedIndex, articles, bias} = this.state;
+    var biasClass = 'bias neutral';
+    switch (true){
+      case (bias >= 2.5): biasClass = 'bias darkestRed'; break;
+      case (bias >= 2): biasClass = 'bias darkRed'; break;
+      case (bias >= 1.5): biasClass = 'bias darkerRed'; break;
+      case (bias > 1): biasClass = 'bias red'; break;
+      case (bias >= .5): biasClass = 'bias lightRed'; break;
+      case (bias < .5 && bias > -.5): biasClass = 'bias neutral'; break;
+      case (bias <= -.5 && bias >= -1): biasClass = 'bias lightBlue'; break;
+      case (bias < -1 && bias > -1.5): biasClass = 'bias blue'; break;
+      case (bias <= -1.5 && bias > -2): biasClass = 'bias darkerBlue'; break;
+      case (bias <= -2 && bias > -2.5): biasClass = 'bias darkBlue'; break;
+      case (bias <= -2.5): biasClass = 'bias darkestBlue'; break;
+    }
+    const providerList = articles.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider}</span></li>);
     return (
       <div className='articleBlock'>
         {/* <div id='left' onClick={this._TogglePrev}></div>
         <div id='right' onClick={this._ToggleNext}></div> */}
+        
         <div className="articleBlockMain" style={{width: '100%', height: '100%'}}>
-          <div className="img">
-            <img src={articles[selectedIndex].metadata.ogImage} />
+          <div className="img" style={{backgroundImage: `url(${articles[selectedIndex].metadata.ogImage})`}}>
           </div>
           <div className="content">
             <div className="title"><a href={articles[selectedIndex].link}>{articles[selectedIndex].title}</a></div>
@@ -58,7 +74,7 @@ export default class NewsSubItems extends Component {
               </ul>
             </div>
           </div>
-          <div className="bias"></div>
+          <div className={biasClass}>{bias}</div>
         </div>
         <div style={{clear: 'both'}}></div>
       </div>

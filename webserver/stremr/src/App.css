@@ -1,6 +1,6 @@
-.App {
+.App, body{
   text-align: center;
-  background-color: #f5f5f5;
+  background-color: rgb(218, 224, 230);
 }
 
 .App-logo {
@@ -10,16 +10,27 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 50px;
-  color: white;
+  background-color:rgb(255, 255, 255);
+  height: 55px;
+  width:100%;
+  color: black;
   display:flex;
   padding-top:10px;
+  border-bottom: 1px solid #b5bbc2;
+  position: fixed;
+  top: 0;
+  z-index: 80;
+}
+
+.App-header svg{
+  font-size: 32px;
+  margin:4px 10px;
+  color: rgb(0, 121, 211);
 }
 
 .App-title {
   display:inline-flex;
-  margin-top:5px;
+  margin-top:0px;
 }
 
 .App-intro {
@@ -50,10 +61,13 @@
   margin-right:5px;
   color:white;
 }
-
+#newsList{
+  margin-top: 85px;
+  background: rgb(218, 224, 230);
+}
 #newsList ul{
   list-style: none;
-  margin:0;
+  margin:15px 0px 0px;
   padding:0;
 }
 
@@ -69,20 +83,24 @@ div.articleBlockMain{
   position: relative;
   box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
   transition: box-shadow 83ms;
+  min-height: 100px;
 }
 
 div.articleBlockMain .content{
   padding:5px;
   display:block;
+  width:80%;
 }
 
 div.articleBlockMain div.img{
   display:block;
+  width:20%;
+  background-size: cover;
+  background-position: center;
 }
 
 div.articleBlockMain div.bias{
   position: absolute;
-  background-color: #ccc;
   top: 0;
   right: 0;
   bottom: 0;
@@ -90,10 +108,38 @@ div.articleBlockMain div.bias{
   display: block;
 }
 
-div.articleBlockMain div.img img{
-  width:130px;
-  float:left;
-  margin-right:10px;
+.bias.darkestRed{
+  background-color: #580000;
+}
+.bias.darkRed{
+  background-color: #5a0000;
+}
+.bias.darkerRed{
+  background-color: #a30000;
+}
+.bias.red{
+  background-color: #b14343;
+}
+.bias.lightRed{
+  background-color: #b86f6f;
+}
+.bias.neutral{
+  background-color: #ccc;
+}
+.bias.lightBlue{
+  background-color: #6f97b8;
+}
+.bias.blue{
+  background-color: #4360b1;
+}
+.bias.darkerBlue{
+  background-color: #005aa3;
+}
+.bias.darkBlue{
+  background-color: #002f5a;
+}
+.bias.darkestBlue{
+  background-color: #001f58;
 }
 
 div.articleBlockMain div.title{
@@ -138,4 +184,26 @@ div.articleBlock div.providers li span{
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.example-enter {
+  opacity: 0.01;
+  width: 0px;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  width: 100px;
+  transition: 700ms;
+}
+
+.example-leave {
+  opacity: 1;
+  width: 100px;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  width: 0px;
+  transition: 700ms;
 }

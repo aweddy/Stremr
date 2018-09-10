@@ -9,7 +9,7 @@ class NewsList extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:1337/api/${this.props.category}`)
+    axios.get(`http://localhost:1337/api/lists/${this.props.category}`)
       .then(res => {
         const posts = res.data.map(obj => obj);
         this.setState({ posts });
@@ -22,7 +22,7 @@ class NewsList extends Component {
         return (
           <li key={index}>
           {
-            <NewsSubItems items={item} />
+            <NewsSubItems items={item} bias={item.bias} />
           }
           </li>
         )

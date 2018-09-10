@@ -23,6 +23,30 @@ const remove_duplicates = (arr) => {
   return Array.from(it);
 }
 
+const checkBias = (provider) => {
+  const bias = [];
+  bias['AP'] = 0;
+  bias['CNN'] = -2;
+  bias['Fox'] = 3;
+  bias['Axios'] = -1;
+  bias['Reuters'] = 0;
+  bias['bias'] = -2;
+  bias['ABC'] = -1;
+  bias['CBS'] = -1;
+  bias['CNBC'] = -1;
+  bias['The Hill'] = 1;
+  bias['USA Today'] = 0;
+  bias['CBC'] = 0;
+  bias['Washington Post'] = -.5;
+  bias['Politico'] = -.5;
+
+  if (bias[provider] != null){
+    return bias[provider];
+  }else{
+    return 0;
+  }
+}
+
 const returnDupes = (arr) => {
   results = arr.filter(function(itm, i){
       return arr.lastIndexOf(itm)== i && arr.indexOf(itm)!= i;
@@ -201,11 +225,12 @@ const buildSArticleListObj = function (arr, variance) {
   for (let i = 0; i<arr.length; i++){
     let currNode = [];
     let tagsList = [];
+    let bias = 0;
     if (usedElem.indexOf(i) == -1){
       let elem = arr[i];
       currNode.push(elem);
-      
-      tagsList.push(elem.tags);
+      bias += checkBias(elem.provider);
+      tagsList = tagsList.concat(elem.tags);
 
       console.log('--------------+Searching for Similar+--------------');
       console.log(elem.title + ' (' + elem.provider + ')');
@@ -231,7 +256,8 @@ const buildSArticleListObj = function (arr, variance) {
 
               usedElem.push(j);
               currNode.push(compare);
-              tagsList = tagsList.concat(compare.tags);        
+              tagsList = tagsList.concat(compare.tags);
+              bias += checkBias(compare.provider);       
             }
           }catch(error){
             console.log("Could not compare: " + error);
@@ -242,8 +268,9 @@ const buildSArticleListObj = function (arr, variance) {
     if (currNode.length > 1){
       var obj = {
         combinedTags: tagsList,
+        bias: ((bias === 0) ? 0 : bias/currNode.length),
         commentTags: findCommonElements(tagsList),
-        providers: [],
+        //providers: [],
         nodes: currNode
       }
       builtArr.push(obj);
@@ -291,13 +318,15 @@ async function createJSON(list, name, variance) {
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-topnews', 'provider': 'AP'},
     {'link': 'http://rss.cnn.com/rss/cnn_topstories.rss', 'provider': 'CNN'},
     {'link': 'http://feeds.foxnews.com/foxnews/latest', 'provider': 'Fox'},
+    {'link': 'https://api.axios.com/feed/', 'provider': 'Axios'},
     {'link': 'http://feeds.reuters.com/reuters/topNews', 'provider': 'Reuters'},
     {'link': 'http://www.msnbc.com/feeds/latest', 'provider': 'MSNBC'},
     {'link': 'https://abcnews.go.com/abcnews/topstories', 'provider': 'ABC'},
     {'link': 'https://www.cbsnews.com/latest/rss/main', 'provider': 'CBS'},
     {'link': 'https://www.cnbc.com/id/100003114/device/rss/rss.html', 'provider': 'CNBC'},
     {'link': 'http://thehill.com/rss/syndicator/19110', 'provider': 'The Hill'},
-    {'link': 'http://rssfeeds.usatoday.com/usatoday-newstopstories&x=1', 'provider': 'USA Today'}
+    {'link': 'http://rssfeeds.usatoday.com/usatoday-newstopstories&x=1', 'provider': 'USA Today'},
+    {'link': 'http://www.cbc.ca/cmlink/rss-topstories', 'provider': 'CBC'}
   ];
 
   createJSON(topNewsArr, 'topNews.json', 0.52);
@@ -321,6 +350,7 @@ async function createJSON(list, name, variance) {
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-politics', 'provider': 'AP'},
     {'link': 'http://rss.cnn.com/rss/cnn_allpolitics.rss', 'provider': 'CNN'},
     {'link': 'http://feeds.foxnews.com/foxnews/politics', 'provider': 'Fox'},
+    {'link': 'https://api.axios.com/feed/politics', 'provider': 'Axios'},
     {'link': 'https://www.politico.com/rss/politics08.xml', 'provider': 'Politico'},
     {'link': 'http://feeds.washingtonpost.com/rss/politics', 'provider': 'Washington Post'},
     {'link': 'https://www.nationalreview.com/feed/', 'provider': 'National Review'},
@@ -338,8 +368,10 @@ async function createJSON(list, name, variance) {
     {'link': 'http://feeds.bbci.co.uk/news/world/rss.xml', 'provider': 'BBC'},
     {'link': 'https://www.huffingtonpost.com/section/world-news/feed', 'provider': 'HuffPo'},
     {'link': 'http://feeds.reuters.com/Reuters/WorldNews', 'provider': 'Reuters'},
+    {'link': 'http://www.cbc.ca/cmlink/rss-world', 'provider': 'CBC'},
     {'link': 'http://rss.cnn.com/rss/cnn_world.rss', 'provider': 'CNN'},
     {'link': 'http://feeds.foxnews.com/foxnews/world', 'provider': 'Fox'},
+    {'link': 'https://api.axios.com/feed/world', 'provider': 'Axios'},
     {'link': 'http://feeds.washingtonpost.com/rss/world', 'provider': 'Washington Post'},
     {'link': 'https://www.cnbc.com/id/100727362/device/rss/rss.html', 'provider': 'CNBC'},
     {'link': 'https://abcnews.go.com/abcnews/internationalheadlines', 'provider': 'ABC'},
@@ -362,16 +394,16 @@ async function createJSON(list, name, variance) {
 
   createJSON(sportsArr, 'sports.json', 0.5);
 
-  let techArr = [
-    {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
-    {'link': 'http://www.si.com/rss/si_topstories.rss', 'provider': 'SI'},
-    {'link': 'https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU', 'provider': 'FoxSports'},
-    {'link': 'http://feeds.feedburner.com/sportsblogs/sbnation.xml', 'provider': 'SBNation'},
-    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CBSSports'},
-    {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CNNSports'},
-    {'link': 'https://sports.yahoo.com/rss/', 'provider': 'Yahoo'},
-    {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
-  ];
+  // let techArr = [
+  //   {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
+  //   {'link': 'http://www.si.com/rss/si_topstories.rss', 'provider': 'SI'},
+  //   {'link': 'https://api.foxsports.com/v1/rss?partnerKey=zBaFxRyGKCfxBagJG9b8pqLyndmvo7UU', 'provider': 'FoxSports'},
+  //   {'link': 'http://feeds.feedburner.com/sportsblogs/sbnation.xml', 'provider': 'SBNation'},
+  //   {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CBSSports'},
+  //   {'link': 'https://rss.cbssports.com/rss/headlines/', 'provider': 'CNNSports'},
+  //   {'link': 'https://sports.yahoo.com/rss/', 'provider': 'Yahoo'},
+  //   {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
+  // ];
 
-  createJSON(techArr, 'technology.json', 0.5);
+  // createJSON(techArr, 'technology.json', 0.5);
 })();
