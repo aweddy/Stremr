@@ -74,7 +74,7 @@ export default class NewsSubItems extends Component {
               </ul>
             </div>
           </div>
-          <div className={biasClass}>{bias}</div>
+          <div className={biasClass}></div>
         </div>
         <div style={{clear: 'both'}}></div>
       </div>
