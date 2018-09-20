@@ -241,18 +241,6 @@ async function getJsonFeedContent(url, provider) {
   });
 };
 
-var loopArray = function(arr) {
-  if (arr instanceof Array) {
-      for (var i = 0; i < arr.length; i++) {
-        loopArray(arr[i]);
-      }
-  }else{
-    document.write(loopArray);
-  }
-}
-
-loopArray(parentArray);
-
 const buildSArticleListObj = function (arr, variance) {
   let builtArr = [], usedElem = [];
 
