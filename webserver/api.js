@@ -1,3 +1,4 @@
+require('newrelic');
 var app = require('express')(),fs = require('fs');
 var Comments = require('./schema/comments');
 var bodyParser = require('body-parser');
