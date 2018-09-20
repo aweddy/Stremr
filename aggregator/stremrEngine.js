@@ -1,8 +1,10 @@
+require('newrelic');
 let Parser = require('rss-parser');
 let parser = new Parser();
 const extract = require('meta-extractor');
 var keyword_extractor = require("keyword-extractor");
 var fs = require("fs");
+var _ = require('underscore');
 const fetch = require('node-fetch'); 
 const {
   performance
@@ -26,8 +28,9 @@ const remove_duplicates = (arr) => {
 const checkBias = (provider) => {
   const bias = [];
   bias['AP'] = 0;
-  bias['CNN'] = -2;
+  bias['CNN'] = -1.5;
   bias['Fox'] = 3;
+  bias['MSNBC'] = -2;
   bias['Axios'] = -1;
   bias['Reuters'] = 0;
   bias['bias'] = -2;
@@ -67,6 +70,15 @@ var findCommonElements = function(arrs) {
       }
   }
   return resArr;
+}
+
+function similarityNum(arrayA, arrayB) {
+  let intC = _.intersection(arrayA,arrayB).length;
+
+  console.log(intC + "//" + (arrayA.length+arrayB.length));
+  console.log(intC/(arrayA.length+arrayB.length));
+
+  return intC/(arrayA.length+arrayB.length);
 }
 
 const diceCoefficient = (l, r) => {
@@ -117,18 +129,17 @@ async function loopRSSFeed (item, provider) {
         {
           cleanStr += res.ogDescription.trim() + ' ';
         }
-        if (typeof res.ogTitle != 'undefined')
-        {
-          cleanStr += res.ogTitle.trim();
-        }
+
+        cleanStr += result.title;
+        
         if (cleanStr === '')
         {
-          reject("No title or description detected.")
+          reject("No description or title detected.")
         }
 
         result.tags = keyword_extractor.extract(cleanStr,{
           language:"english",
-          remove_digits: true,
+          remove_digits: false,
           return_changed_case:true,
           remove_duplicates: true
         });
@@ -142,6 +153,17 @@ async function loopRSSFeed (item, provider) {
         result.tags.removeIf("donald");
         result.tags.removeIf("trump");
         result.tags.removeIf("latest");
+        result.tags.removeIf("washington");
+        result.tags.removeIf("set");
+        result.tags.removeIf("week");
+        result.tags.removeIf("watch");
+        result.tags.removeIf("white");
+        result.tags.removeIf("house");
+        result.tags.removeIf("year");
+        result.tags.removeIf("day");
+        result.tags.removeIf("month");
+        result.tags.removeIf("candidate");
+        result.tags.removeIf("candidates");
 
         result.cleanedCompare = result.tags.join(' ');
 
@@ -219,6 +241,18 @@ async function getJsonFeedContent(url, provider) {
   });
 };
 
+var loopArray = function(arr) {
+  if (arr instanceof Array) {
+      for (var i = 0; i < arr.length; i++) {
+        loopArray(arr[i]);
+      }
+  }else{
+    document.write(loopArray);
+  }
+}
+
+loopArray(parentArray);
+
 const buildSArticleListObj = function (arr, variance) {
   let builtArr = [], usedElem = [];
 
@@ -242,7 +276,7 @@ const buildSArticleListObj = function (arr, variance) {
         let compare = arr[j];
         if (i !== j && usedElem.indexOf(j) == -1 && currNode.indexOf(compare) == -1){
           try{
-            let threshold = diceCoefficient(elem.cleanedCompare, compare.cleanedCompare);
+            let threshold = similarityNum(elem.tags, compare.tags);
             if (threshold > variance)
             {
               console.log('--------------+Found Similar ('+ threshold +')+----------------');
@@ -329,7 +363,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://www.cbc.ca/cmlink/rss-topstories', 'provider': 'CBC'}
   ];
 
-  createJSON(topNewsArr, 'topNews.json', 0.52);
+  createJSON(topNewsArr, 'topNews.json', 0.05);
     
   let usNewsArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-usnews', 'provider': 'AP'},
@@ -344,7 +378,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rss.nytimes.com/services/xml/rss/nyt/US.xml', 'provider': 'NY Times'}
   ];
 
-  createJSON(usNewsArr, 'usNews.json', 0.55);
+  createJSON(usNewsArr, 'usNews.json', 0.08);
 
   let politicsArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-politics', 'provider': 'AP'},
@@ -361,7 +395,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatodaycomwashington-topstories&x=1', 'provider': 'USA Today'}
   ];
 
-  createJSON(politicsArr, 'politics.json', 0.55);
+  createJSON(politicsArr, 'politics.json', 0.08);
 
   let worldArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-intlnews', 'provider': 'AP'},
@@ -379,7 +413,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories', 'provider': 'USA Today'}
   ];
 
-  createJSON(worldArr, 'world.json', 0.55);
+  createJSON(worldArr, 'world.json', 0.08);
 
   let sportsArr = [
     {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
@@ -392,7 +426,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
   ];
 
-  createJSON(sportsArr, 'sports.json', 0.5);
+  createJSON(sportsArr, 'sports.json', 0.08);
 
   // let techArr = [
   //   {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
