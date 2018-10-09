@@ -5,21 +5,85 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40px;
+  height: 150px;
   display:inline-block;
+  position: fixed;
+  top:-20px;
+  z-index:10;
+  opacity:0.3;
 }
 
 .App-header {
-  background-color:rgb(255, 255, 255);
-  height: 55px;
+  background-color:rgb(0, 0, 0);
+  height: 65px;
   width:100%;
-  color: black;
+  color: white;
   display:flex;
-  padding-top:10px;
   border-bottom: 1px solid #b5bbc2;
   position: fixed;
   top: 0;
   z-index: 80;
+}
+
+.App-header .Header-icons{
+  margin-left: 12px;
+  order: 3;
+}
+
+.App-header .Header-icons .icon{
+  border-left:1px solid white;
+  height:100%;
+}
+.App-header .Header-icons svg{
+  color:white;
+  font-size:24px;
+  margin-top:20px;
+}
+
+.dropdown {
+  margin-left: auto;
+  order: 2;
+}
+
+.dropdown div {
+  padding: 5px;
+  margin-top:15px;
+}
+
+.dropdown div:after{
+  content: "▼";
+  padding: 12px 8px;
+  right: 10px;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  height: 100%;
+  pointer-events: none;
+}
+
+.dropdown div svg{
+  font-size:12px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.App-title:after{
+  content: "";
+  position: absolute; top: 0; bottom: 0; left: -15px; right: -15px;
+  box-shadow: inset black 0 -8px 20px;
+  width:350px;
 }
 
 .App-header svg{
@@ -29,12 +93,11 @@
 }
 
 .App-title {
-  display:inline-flex;
-  margin-top:0px;
-}
-
-.App-intro {
-  font-size: large;
+  display: inline-flex;
+  font-size: 100px;
+  font-weight: bold;
+  margin-top: -20px;
+  overflow: hidden;
 }
 
 #newsSelect ul{
@@ -62,7 +125,7 @@
   color:white;
 }
 #newsList{
-  margin-top: 85px;
+  margin-top: 75px;
   background: rgb(218, 224, 230);
 }
 #newsList ul{

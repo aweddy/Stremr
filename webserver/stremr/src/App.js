@@ -2,21 +2,30 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin } from '@fortawesome/free-solid-svg-icons'
+import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin, faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 library.add(faGlobeAmericas)
 library.add(faNewspaper)
 library.add(faArrowUp)
 library.add(faMapPin)
+library.add(faUserCog)
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">stremr</h1>
+          <div className="App-title">stremr</div>
+          <div className="dropdown">
+            <div><FontAwesomeIcon icon="arrow-up" /> Top News</div>
+            <div className="dropdown-content">
+              <p>Hello World!</p>
+            </div>
+          </div>
+          <div className="Header-icons">
+            <div className="icon"><FontAwesomeIcon icon="user-cog" /></div>
+          </div>
         </header>
         {/* <div id="newsSelect">
           <ul>
