@@ -49,7 +49,7 @@
 
 .dropdown div {
   padding: 5px;
-  margin-top:15px;
+  margin-top:10px;
 }
 
 .dropButton{
@@ -322,9 +322,5 @@ div.articleBlock div.providers li span{
   .App-title{
     font-size:50px;
     margin-top:6px;
-  }
-
-  .dropdown div{
-    margin-top:10px;
   }
 }
