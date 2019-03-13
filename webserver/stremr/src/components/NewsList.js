@@ -9,7 +9,7 @@ class NewsList extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:1337/api/lists/${this.props.category}`)
+    axios.get(`http://35.196.130.18:1337/api/lists/${this.props.category}`)
       .then(res => {
         const posts = res.data.map(obj => obj);
         this.setState({ posts });
