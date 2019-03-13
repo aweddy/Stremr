@@ -351,7 +351,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://www.cbc.ca/cmlink/rss-topstories', 'provider': 'CBC'}
   ];
 
-  createJSON(topNewsArr, 'topNews.json', 0.05);
+  createJSON(topNewsArr, 'topNews.json', 0.07);
     
   let usNewsArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-usnews', 'provider': 'AP'},
@@ -366,7 +366,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rss.nytimes.com/services/xml/rss/nyt/US.xml', 'provider': 'NY Times'}
   ];
 
-  createJSON(usNewsArr, 'usNews.json', 0.08);
+  //createJSON(usNewsArr, 'usNews.json', 0.08);
 
   let politicsArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-politics', 'provider': 'AP'},
@@ -383,7 +383,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatodaycomwashington-topstories&x=1', 'provider': 'USA Today'}
   ];
 
-  createJSON(politicsArr, 'politics.json', 0.08);
+  //createJSON(politicsArr, 'politics.json', 0.08);
 
   let worldArr = [
     {'link': 'https://afs-prod.appspot.com/api/v2/feed/tag?tags=apf-intlnews', 'provider': 'AP'},
@@ -401,7 +401,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/UsatodaycomWorld-TopStories', 'provider': 'USA Today'}
   ];
 
-  createJSON(worldArr, 'world.json', 0.08);
+  //createJSON(worldArr, 'world.json', 0.08);
 
   let sportsArr = [
     {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},
@@ -414,7 +414,7 @@ async function createJSON(list, name, variance) {
     {'link': 'http://rssfeeds.usatoday.com/usatodaycomsports-topstories&x=1', 'provider': 'USA Today'}
   ];
 
-  createJSON(sportsArr, 'sports.json', 0.08);
+  //createJSON(sportsArr, 'sports.json', 0.08);
 
   // let techArr = [
   //   {'link': 'http://www.espn.com/espn/rss/news', 'provider': 'ESPN'},

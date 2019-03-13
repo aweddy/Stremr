@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin, faUserCog } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NewsList from './components/NewsList';
+import MenuNav from './components/MenuNav';
 
 library.add(faGlobeAmericas)
 library.add(faNewspaper)
@@ -12,33 +14,32 @@ library.add(faMapPin)
 library.add(faUserCog)
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { isEmptyState: true, selectedMenu: "topNews" }
+  }
+
+  handleMenu = (menuValue) => {
+    this.setState({selectedMenu: menuValue});
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <div className="App-title">stremr</div>
           <div className="dropdown">
-            <div><FontAwesomeIcon icon="arrow-up" /> Top News</div>
-            <div className="dropdown-content">
-              <p>Hello World!</p>
-            </div>
+            <MenuNav onSelectMenu={this.handleMenu} />
           </div>
           <div className="Header-icons">
             <div className="icon"><FontAwesomeIcon icon="user-cog" /></div>
           </div>
         </header>
-        {/* <div id="newsSelect">
-          <ul>
-            <li className="top"><FontAwesomeIcon icon="arrow-up" />Top</li>
-            <li className="us"><FontAwesomeIcon icon="map-pin" />US</li>
-            <li className="world"><FontAwesomeIcon icon="globe-americas" />World</li>
-            <li className="politics"><FontAwesomeIcon icon="globe-americas" />Politics</li>
-            <li className="sports"><FontAwesomeIcon icon="globe-americas" />Sports</li>
-          </ul>
-        </div> */}
         <div id="newsList">
-          <ul id="topNews"></ul>
-          <ul id="politics"></ul>
+          {this.state.selectedMenu == "topNews" && <NewsList category="topNews"/>}
+          {this.state.selectedMenu == "politics" && <NewsList category="politics"/>}
+          {this.state.selectedMenu == "world" && <NewsList category="world"/>}
         </div>
       </div>
     );

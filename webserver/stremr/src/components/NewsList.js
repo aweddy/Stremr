@@ -16,17 +16,18 @@ class NewsList extends Component {
       });
   }
 
-  render() { 
+  render() {
+    var newsList = this.state.posts.map((item, index) => {
+      return (
+        <li key={index}>
+        {
+          <NewsSubItems items={item} bias={item.bias} />
+        }
+        </li>
+      )
+    })
     return (
-      this.state.posts.map((item, index) => {
-        return (
-          <li key={index}>
-          {
-            <NewsSubItems items={item} bias={item.bias} />
-          }
-          </li>
-        )
-      })
+      <ul id={this.props.category}>{newsList}</ul>
     )
   }
 }
