@@ -32,9 +32,9 @@ class App extends Component {
           <div className="dropdown">
             <MenuNav onSelectMenu={this.handleMenu} />
           </div>
-          <div className="Header-icons">
+          {/* <div className="Header-icons">
             <div className="icon"><FontAwesomeIcon icon="user-cog" /></div>
-          </div>
+          </div> */}
         </header>
         <div id="newsList">
           {this.state.selectedMenu == "topNews" && <NewsList category="topNews"/>}

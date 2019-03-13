@@ -42,6 +42,7 @@
 
 .dropdown {
   margin-left: auto;
+  margin-right: 20px;
   order: 2;
   z-index: 100;
 }
@@ -49,6 +50,11 @@
 .dropdown div {
   padding: 5px;
   margin-top:15px;
+}
+
+.dropdown select{
+  font-size: 24px;
+  width: 200px;
 }
 
 .dropdown .selected:after{
@@ -303,7 +309,16 @@ div.articleBlock div.providers li span{
     width:95%;
   }
 
+  .App-header{
+    height:50px;
+  }
+
   .App-title{
-    content: "s";
+    font-size:50px;
+    margin-top:6px;
+  }
+
+  .dropdown div{
+    margin-top:10px;
   }
 }
