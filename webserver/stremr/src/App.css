@@ -43,6 +43,7 @@
 .dropdown {
   margin-left: auto;
   order: 2;
+  z-index: 100;
 }
 
 .dropdown div {
