@@ -29,9 +29,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <div className="App-title">stremr</div>
-          <div className="dropdown">
-            <MenuNav onSelectMenu={this.handleMenu} />
-          </div>
+          <MenuNav onSelectMenu={this.handleMenu} />
           {/* <div className="Header-icons">
             <div className="icon"><FontAwesomeIcon icon="user-cog" /></div>
           </div> */}

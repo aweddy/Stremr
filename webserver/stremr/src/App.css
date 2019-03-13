@@ -52,6 +52,15 @@
   margin-top:15px;
 }
 
+.dropButton{
+  text-align: right;
+}
+
+.dropButton svg{
+  font-size:50px;
+  text-align: right;
+}
+
 .dropdown select{
   font-size: 24px;
   width: 200px;
@@ -68,10 +77,6 @@
   pointer-events: none;
 }
 
-.dropdown div svg{
-  font-size:12px;
-}
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -83,21 +88,23 @@
   z-index: 1;
 }
 
-.dropdown-content ul{
+.dropdown ul{
   margin:0;
   padding:0;
+  background:white;
+  border:1px solid black;
 }
 
-.dropdown-content ul li{
+.dropdown ul li{
   list-style: none;
   margin-left:0;
-  padding: 10px 0 10px 0;
-  border:1px solid #333;
+  padding: 10px 10px 10px 10px;
+  border:1px solid rgb(0, 121, 211);
   text-align: left;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
+.dropdown ul li a{
+  color: rgb(0, 121, 211);
 }
 
 .App-header svg{
@@ -310,7 +317,6 @@ div.articleBlock div.providers li span{
   }
 
   .App-header{
-    height:50px;
   }
 
   .App-title{
