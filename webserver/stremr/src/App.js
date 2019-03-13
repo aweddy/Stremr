@@ -38,6 +38,7 @@ class App extends Component {
           {this.state.selectedMenu == "topNews" && <NewsList category="topNews"/>}
           {this.state.selectedMenu == "politics" && <NewsList category="politics"/>}
           {this.state.selectedMenu == "world" && <NewsList category="world"/>}
+          {this.state.selectedMenu == "sports" && <NewsList category="sports"/>}
         </div>
       </div>
     );

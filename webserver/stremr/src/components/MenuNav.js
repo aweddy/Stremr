@@ -52,6 +52,7 @@ class Dropdown extends React.Component {
                     <li><a className="active" href="#top" onClick={this.handleMenuChange} value="topNews">Top News</a></li>
                     <li><a href="#politics" onClick={this.handleMenuChange} value="politics">Politics</a></li>
                     <li><a href="#world" onClick={this.handleMenuChange} value="world">World News</a></li>
+                    <li><a href="#sports" onClick={this.handleMenuChange} value="sports">Sports</a></li>
                 </ul>
                 ):
                 (
