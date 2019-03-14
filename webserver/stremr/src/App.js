@@ -6,6 +6,7 @@ import { faNewspaper, faGlobeAmericas, faArrowUp, faMapPin, faUserCog } from '@f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewsList from './components/NewsList';
 import MenuNav from './components/MenuNav';
+import HashtagTop from './components/HashtagTop';
 
 library.add(faGlobeAmericas)
 library.add(faNewspaper)

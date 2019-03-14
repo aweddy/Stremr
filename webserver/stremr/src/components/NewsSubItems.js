@@ -16,6 +16,7 @@ export default class NewsSubItems extends Component {
     this.state = {
         fullSet: props.items,
         bias: props.bias,
+        count: props.count,
         articles: props.items.nodes,
         groupedList: [],
         selectedIndex: 0,
@@ -80,7 +81,7 @@ export default class NewsSubItems extends Component {
   }
 
   render() {
-    let {selectedIndex, bias, groupedList, selectedArticleIndex} = this.state;
+    let {selectedIndex, bias, groupedList, selectedArticleIndex, count} = this.state;
     var biasClass = 'bias neutral';
     switch (true){
       case (bias >= 2.5): biasClass = 'bias darkestRed'; break;
@@ -99,7 +100,7 @@ export default class NewsSubItems extends Component {
     var providerList = groupedList.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider} ({pro.articles.length})</span></li>);
     
     return (
-      <div className='articleBlock'>
+      <div className='articleBlock' id={"article_"+count}>
         {/* <div id='left' onClick={this._TogglePrev}></div>
         <div id='right' onClick={this._ToggleNext}></div> */}
         

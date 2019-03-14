@@ -147,7 +147,6 @@
   color:white;
 }
 #newsList{
-  margin-top: 75px;
   background: rgb(218, 224, 230);
 }
 #newsList ul{
@@ -168,7 +167,7 @@
 
 #newsList ul li{
   display: block;
-  margin: 0px 15px 10px 15px;
+  margin: 0px 15px 18px 15px;
   padding: 0px;
   background-color: white;
 }
@@ -326,6 +325,29 @@ div.articleBlock div.providers li span{
 .mobileArrows
 {
   display:none;
+}
+
+#newsList .hashtagTop{
+  margin-top: 75px;
+}
+
+#newsList .hashtagTop ul{
+  text-align: center;
+  margin: 10px 15px 10px 15px;
+  background-color: red;
+}
+
+#newsList .hashtagTop ul li{
+  display: inline-block;
+  color:white;
+  font-weight: bold;
+  background-color: red;
+  margin: 10px 15px 18px 15px;
+}
+
+#newsList .hashtagTop ul li a{
+  color:white;
+  text-decoration: none;
 }
 
 @media (max-width: 560px) {

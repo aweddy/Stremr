@@ -9,15 +9,15 @@ library.add(faChevronCircleUp);
 
 class Dropdown extends React.Component {
     constructor(){
-     super();
+        super();
+        
+        this.state = {
+            displayMenu: false,
+        };
     
-     this.state = {
-           displayMenu: false,
-         };
-    
-      this.showDropdownMenu = this.showDropdownMenu.bind(this);
-      this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
-      this.menuIcon = "chevron-circle-down";
+        this.showDropdownMenu = this.showDropdownMenu.bind(this);
+        this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
+        this.menuIcon = "chevron-circle-down";
     
     };
     

@@ -152,6 +152,8 @@ async function loopRSSFeed (item, provider) {
         result.tags.removeIf("|");
         result.tags.removeIf("donald");
         result.tags.removeIf("trump");
+        result.tags.removeIf("the");
+        result.tags.removeIf("the latest");
         result.tags.removeIf("latest");
         result.tags.removeIf("washington");
         result.tags.removeIf("set");

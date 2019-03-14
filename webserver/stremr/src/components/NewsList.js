@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import './App.css';
 import axios from 'axios';
 import NewsSubItems from './NewsSubItems';
+import HashtagTop from './HashtagTop';
 
 class NewsList extends Component {
   state = {
@@ -16,18 +17,41 @@ class NewsList extends Component {
       });
   }
 
+  mode(arr){
+    return arr.sort((a,b) =>
+          arr.filter(v => v===a).length
+        - arr.filter(v => v===b).length
+    ).pop();
+  }
+
   render() {
-    var newsList = this.state.posts.map((item, index) => {
+    var posts = this.state.posts;
+
+    var newsList = posts.map((item, index) => {
       return (
         <li key={index}>
         {
-          <NewsSubItems items={item} bias={item.bias} />
+          <NewsSubItems items={item} bias={item.bias} count={index} />
         }
         </li>
       )
     })
+    var hashTags = posts.map((item, index) => {
+      return (
+        <li key={index}><a href={'#article_'+ index}>
+        {
+          "#" + this.mode(item.combinedTags)
+        }
+        </a></li>
+      )
+    })
     return (
-      <ul id={this.props.category}>{newsList}</ul>
+      <div>
+        <div className="hashtagTop">
+          <ul>{hashTags}</ul>
+        </div>
+        <ul id={this.props.category}>{newsList}</ul>
+      </div>
     )
   }
 }
