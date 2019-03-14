@@ -8,6 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.2",
     "axios": "^0.18.0",
     "i": "^0.3.6",
+    "lodash": "^4.17.11",
     "npm": "^6.4.1",
     "react": "^16.4.2",
     "react-addons-css-transition-group": "^15.6.2",

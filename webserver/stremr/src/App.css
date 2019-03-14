@@ -111,6 +111,7 @@
   font-size: 32px;
   margin:4px 10px;
   color: rgb(0, 121, 211);
+  text-shadow: 0 0 3px #fff;
 }
 
 .App-title {
@@ -191,6 +192,27 @@ div.articleBlockMain div.bias{
   bottom: 0;
   width: 3px;
   display: block;
+}
+
+div.articleBlockMain .leftArrow{
+  width: 25px;
+  background-color: #ccc;
+}
+
+div.articleBlockMain .rightArrow{
+  width: 25px;
+  background-color: #ccc;
+  margin-right: 3px;
+}
+
+.leftArrow svg{
+  margin-top: 60px;
+  margin-right: 7px;
+}
+
+.rightArrow svg{
+  margin-top: 60px;
+  margin-right: 5px;
 }
 
 .bias.darkestRed{
@@ -288,6 +310,11 @@ div.articleBlock div.providers li span{
   transition: 700ms;
 }
 
+.mobileArrows
+{
+  display:none;
+}
+
 @media (max-width: 560px) {
   /* Styles */
   div.articleBlockMain{
@@ -322,5 +349,30 @@ div.articleBlock div.providers li span{
   .App-title{
     font-size:50px;
     margin-top:6px;
+  }
+
+  .rightArrow,
+  .leftArrow
+  {
+    display:none;
+  }
+
+  .mobileArrows{
+    display:block;
+    padding: 15px;
+    background: #ccc;
+  }
+
+  .leftArrowMobile
+  {
+    display:inline-block;
+    width:50%;
+    text-align: center;
+  }
+  .rightArrowMobile
+  {
+    display:inline-block;
+    width:50%;
+    text-align: center;
   }
 }

@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 //import './App.css';
+import _ from 'lodash'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+library.add(faChevronLeft);
+library.add(faChevronRight);
 
 export default class NewsSubItems extends Component {
 
@@ -10,14 +17,24 @@ export default class NewsSubItems extends Component {
         fullSet: props.items,
         bias: props.bias,
         articles: props.items.nodes,
+        groupedList: [],
         selectedIndex: 0,
+        selectedArticleIndex: 0
     }
     this._TogglePrev = this._TogglePrev.bind(this);
     this._ToggleNext = this._ToggleNext.bind(this);
+    this._ToggleArticlePrev = this._ToggleArticlePrev.bind(this);
+    this._ToggleArticleNext = this._ToggleArticleNext.bind(this);
+
+    this.state.groupedList = 
+    _.chain(this.state.articles)
+    .groupBy('provider')
+    .map((value, key) => ({provider: key, articles: value}))
+    .value();
   }
 
   _ToggleNext() {
-    if(this.state.selectedIndex === this.state.articles.length - 1)
+    if(this.state.selectedIndex === this.state.groupedList[this.state.selectedIndex].length - 1)
       return;
 
     this.setState(prevState => ({
@@ -27,7 +44,8 @@ export default class NewsSubItems extends Component {
 
   _ToggleSelected(num) {
     this.setState(prevState => ({
-      selectedIndex: num
+      selectedIndex: num,
+      selectedArticleIndex: 0
     }))
   }
 
@@ -40,8 +58,26 @@ export default class NewsSubItems extends Component {
     }))
   }
 
+
+  _ToggleArticlePrev() {
+    if(this.state.selectedArticleIndex === 0)
+      return;
+
+    this.setState(prevState => ({
+      selectedArticleIndex: prevState.selectedArticleIndex - 1
+    }))
+  }
+  _ToggleArticleNext() {
+    if(this.state.selectedArticleIndex === this.state.groupedList[this.state.selectedIndex].articles.length - 1)
+      return;
+
+    this.setState(prevState => ({
+      selectedArticleIndex: prevState.selectedArticleIndex + 1
+    }))
+  }
+
   render() {
-    let {selectedIndex, articles, bias} = this.state;
+    let {selectedIndex, bias, groupedList, selectedArticleIndex} = this.state;
     var biasClass = 'bias neutral';
     switch (true){
       case (bias >= 2.5): biasClass = 'bias darkestRed'; break;
@@ -56,18 +92,21 @@ export default class NewsSubItems extends Component {
       case (bias <= -2 && bias > -2.5): biasClass = 'bias darkBlue'; break;
       case (bias <= -2.5): biasClass = 'bias darkestBlue'; break;
     }
-    const providerList = articles.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider}</span></li>);
+
+    var providerList = groupedList.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider} ({pro.articles.length})</span></li>);
+    
     return (
       <div className='articleBlock'>
         {/* <div id='left' onClick={this._TogglePrev}></div>
         <div id='right' onClick={this._ToggleNext}></div> */}
         
         <div className="articleBlockMain" style={{width: '100%', height: '100%'}}>
-          <div className="img" style={{backgroundImage: `url(${articles[selectedIndex].metadata.ogImage})`}}>
+          <div className="leftArrow" onClick={this._ToggleArticlePrev}><FontAwesomeIcon icon="chevron-left" /></div>
+          <div className="img" style={{backgroundImage: `url(${groupedList[selectedIndex].articles[selectedArticleIndex].metadata.ogImage})`}}>
           </div>
           <div className="content">
-            <div className="title"><a href={articles[selectedIndex].link}>{articles[selectedIndex].title}</a></div>
-            <div className="description">{articles[selectedIndex].metadata.description}</div>
+            <div className="title"><a href={groupedList[selectedIndex].articles[selectedArticleIndex].link}>{groupedList[selectedIndex].articles[selectedArticleIndex].title}</a></div>
+            <div className="description">{groupedList[selectedIndex].articles[selectedArticleIndex].metadata.description}</div>
             <div className="providers">
               <ul>
                 {providerList}
@@ -75,6 +114,13 @@ export default class NewsSubItems extends Component {
             </div>
           </div>
           <div className={biasClass}></div>
+          <div className="rightArrow" onClick={this._ToggleArticleNext}><FontAwesomeIcon icon="chevron-right" /></div>
+
+          <div className="mobileArrows">
+            <div className="leftArrowMobile" onClick={this._ToggleArticlePrev}><FontAwesomeIcon icon="chevron-left" /></div>
+            <div className="rightArrowMobile" onClick={this._ToggleArticleNext}><FontAwesomeIcon icon="chevron-right" /></div>
+          </div>
+
         </div>
         <div style={{clear: 'both'}}></div>
       </div>
