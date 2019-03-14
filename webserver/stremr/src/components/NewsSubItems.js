@@ -110,11 +110,6 @@ export default class NewsSubItems extends Component {
           <div className="content">
             <div className="title"><a href={groupedList[selectedIndex].articles[selectedArticleIndex].link}>{groupedList[selectedIndex].articles[selectedArticleIndex].title}</a></div>
             <div className="description">{groupedList[selectedIndex].articles[selectedArticleIndex].metadata.description}</div>
-            <div className="providers">
-              <ul>
-                {providerList}
-              </ul>
-            </div>
           </div>
           <div className={biasClass}></div>
           <div className="rightArrow" onClick={this._ToggleArticleNext} style={groupedList[selectedIndex].articles[selectedArticleIndex+1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-right" /></div>
@@ -124,6 +119,11 @@ export default class NewsSubItems extends Component {
             <div className="rightArrowMobile" onClick={this._ToggleArticleNext} style={groupedList[selectedIndex].articles[selectedArticleIndex+1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-right" /></div>
           </div>
 
+        </div>
+        <div className="providers">
+            <ul>
+              {providerList}
+            </ul>
         </div>
         <div style={{clear: 'both'}}></div>
       </div>

@@ -152,9 +152,18 @@
 }
 #newsList ul{
   list-style: none;
-  margin:15px 0px 0px;
+  margin:0px 0px 0px;
   padding:0;
   text-align: right;
+}
+
+.providers ul{
+  background-color: #222;
+}
+
+.providers ul li{
+  background-color: #222;
+  color:white;
 }
 
 #newsList ul li{
@@ -164,10 +173,13 @@
   background-color: white;
 }
 
+div.articleBlock{
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+}
+
 div.articleBlockMain{
   display:flex;
   position: relative;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
   transition: box-shadow 83ms;
   min-height: 100px;
 }
@@ -269,11 +281,12 @@ div.articleBlockMain div.description{
   display: inline-block;
   margin: 0;
   padding-right: 2px;
-  color:#222;
+  background-color: #222;
+  color:white;
 }
 
 #newsList div.articleBlock div.providers ul li.selected{
-  border-bottom: 3px solid #222;
+  border-bottom: 3px solid red;
 }
 
 div.articleBlock div.providers li span{
@@ -320,7 +333,6 @@ div.articleBlock div.providers li span{
   div.articleBlockMain{
     display:block;
     position: relative;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
     transition: box-shadow 83ms;
     min-height: 100px;
   }
