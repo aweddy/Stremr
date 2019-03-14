@@ -334,19 +334,20 @@ div.articleBlock div.providers li span{
 #newsList .hashtagTop ul{
   text-align: center;
   margin: 10px 15px 10px 15px;
-  background-color: red;
+  background-color: #ccc;
+  border:1px solid red;
 }
 
 #newsList .hashtagTop ul li{
   display: inline-block;
   color:white;
+  padding:5px;
   font-weight: bold;
-  background-color: red;
-  margin: 10px 15px 18px 15px;
+  margin: 5px 5px;
 }
 
 #newsList .hashtagTop ul li a{
-  color:white;
+  color:black;
   text-decoration: none;
 }
 
