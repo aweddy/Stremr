@@ -19,6 +19,8 @@ export default class NewsSubItems extends Component {
         articles: props.items.nodes,
         groupedList: [],
         selectedIndex: 0,
+        showLeft: false,
+        showRight: false,
         selectedArticleIndex: 0
     }
     this._TogglePrev = this._TogglePrev.bind(this);
@@ -31,6 +33,7 @@ export default class NewsSubItems extends Component {
     .groupBy('provider')
     .map((value, key) => ({provider: key, articles: value}))
     .value();
+
   }
 
   _ToggleNext() {
@@ -101,7 +104,7 @@ export default class NewsSubItems extends Component {
         <div id='right' onClick={this._ToggleNext}></div> */}
         
         <div className="articleBlockMain" style={{width: '100%', height: '100%'}}>
-          <div className="leftArrow" onClick={this._ToggleArticlePrev}><FontAwesomeIcon icon="chevron-left" /></div>
+          <div className="leftArrow" onClick={this._ToggleArticlePrev} style={groupedList[selectedIndex].articles[selectedArticleIndex-1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-left" /></div>
           <div className="img" style={{backgroundImage: `url(${groupedList[selectedIndex].articles[selectedArticleIndex].metadata.ogImage})`}}>
           </div>
           <div className="content">
@@ -114,11 +117,11 @@ export default class NewsSubItems extends Component {
             </div>
           </div>
           <div className={biasClass}></div>
-          <div className="rightArrow" onClick={this._ToggleArticleNext}><FontAwesomeIcon icon="chevron-right" /></div>
+          <div className="rightArrow" onClick={this._ToggleArticleNext} style={groupedList[selectedIndex].articles[selectedArticleIndex+1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-right" /></div>
 
           <div className="mobileArrows">
-            <div className="leftArrowMobile" onClick={this._ToggleArticlePrev}><FontAwesomeIcon icon="chevron-left" /></div>
-            <div className="rightArrowMobile" onClick={this._ToggleArticleNext}><FontAwesomeIcon icon="chevron-right" /></div>
+            <div className="leftArrowMobile" onClick={this._ToggleArticlePrev} style={groupedList[selectedIndex].articles[selectedArticleIndex-1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-left" /></div>
+            <div className="rightArrowMobile" onClick={this._ToggleArticleNext} style={groupedList[selectedIndex].articles[selectedArticleIndex+1] ? {color: 'black'} : {color:'#ddd'}}><FontAwesomeIcon icon="chevron-right" /></div>
           </div>
 
         </div>
