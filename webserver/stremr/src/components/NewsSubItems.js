@@ -183,8 +183,10 @@ export default class NewsSubItems extends Component {
         </div>
         <div className="chatArea" id={'comments' + category + count}> 
           <div id={"msgArea_" + tag} className="messageArea"></div>
-          <input className="messageInput" id={"message_" + tag} onKeyPress={this.handleKeyPress} placeholder="Comment..." type="text" />
-          <FontAwesomeIcon icon="chevron-circle-right" onClick={this.send} />
+          <label htmlFor={'label' + category + count}>
+            <FontAwesomeIcon className="commentSubmit" icon="chevron-circle-right" onClick={this.send} />
+            <input name={'label' + category + count} className="messageInput" id={"message_" + tag} onKeyPress={this.handleKeyPress} placeholder="Comment..." type="text" />
+          </label>
         </div>
         <div className="msgDownArrow" onClick={this.showComments}><FontAwesomeIcon icon="comment" /></div>
         <div style={{clear: 'both'}}></div>

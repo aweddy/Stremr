@@ -358,9 +358,16 @@ div.articleBlock div.providers li span{
   height:100px;
 }
 
+.chatArea label {position:relative;}
+
 .messageInput{
-  width: calc(100% - 20px);
+  width: 98%;
+  border: 1px solid rgb(0, 121, 211);
+  border-radius: 3px;
+  margin:0px;
+  padding:3px;
 }
+.commentSubmit { position:absolute; z-index: 2; right:3px; top:1px}
 
 .msgDownArrow{
   height: 25px;
@@ -374,6 +381,8 @@ div.articleBlock div.providers li span{
 
 .chatArea{
   display: none;
+  padding: 10px;
+  text-align: center;
 }
 
 @media (max-width: 560px) {
