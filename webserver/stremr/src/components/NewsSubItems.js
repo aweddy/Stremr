@@ -130,7 +130,7 @@ export default class NewsSubItems extends Component {
     {
       allCommentAreas[i].style["display"] = "none";
     }
-    var cArea = document.getElementById(this.state.category + this.state.count);
+    var cArea = document.getElementById('comments' + this.state.category + this.state.count);
     cArea.style.display = "block";
   }
 
@@ -155,7 +155,7 @@ export default class NewsSubItems extends Component {
     var providerList = groupedList.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider} ({pro.articles.length})</span></li>);
     
     return (
-      <div className='articleBlock' id={"article_" + tag}>
+      <div className='articleBlock' id={category + count}>
         {/* <div id='left' onClick={this._TogglePrev}></div>
         <div id='right' onClick={this._ToggleNext}></div> */}
         
@@ -181,7 +181,7 @@ export default class NewsSubItems extends Component {
               {providerList}
             </ul>
         </div>
-        <div className="chatArea" id={category + count}> 
+        <div className="chatArea" id={'comments' + category + count}> 
           <div id={"msgArea_" + tag} className="messageArea"></div>
           <input className="messageInput" id={"message_" + tag} onKeyPress={this.handleKeyPress} placeholder="Comment..." type="text" />
           <FontAwesomeIcon icon="chevron-circle-right" onClick={this.send} />
