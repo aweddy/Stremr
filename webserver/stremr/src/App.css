@@ -358,6 +358,10 @@ div.articleBlock div.providers li span{
   height:100px;
 }
 
+.messageInput{
+  width: calc(100% - 20px);
+}
+
 .msgDownArrow{
   height: 25px;
   text-align:center;

@@ -27,7 +27,7 @@ export default class NewsSubItems extends Component {
         showLeft: false,
         showRight: false,
         selectedArticleIndex: 0,
-        endpoint: "stremr.com:1337",
+        endpoint: "35.196.130.18:1337",
         category: props.category
     }
     this._TogglePrev = this._TogglePrev.bind(this);
