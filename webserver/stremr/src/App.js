@@ -33,10 +33,10 @@ class App extends Component {
           </div> */}
         </header>
         <div id="newsList">
-          {this.state.selectedMenu == "topNews" && <NewsList category="topNews"/>}
-          {this.state.selectedMenu == "politics" && <NewsList category="politics"/>}
-          {this.state.selectedMenu == "world" && <NewsList category="world"/>}
-          {this.state.selectedMenu == "sports" && <NewsList category="sports"/>}
+          {this.state.selectedMenu === "topNews" && <NewsList category="topNews"/>}
+          {this.state.selectedMenu === "politics" && <NewsList category="politics"/>}
+          {this.state.selectedMenu === "world" && <NewsList category="world"/>}
+          {this.state.selectedMenu === "sports" && <NewsList category="sports"/>}
         </div>
       </div>
     );
