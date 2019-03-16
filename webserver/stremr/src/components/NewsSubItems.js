@@ -90,7 +90,7 @@ export default class NewsSubItems extends Component {
 
   send = () => {
     let text = document.getElementById("message_" + this.state.tag);
-    if (text.value != ""){
+    if (text.value !== ""){
       const socket = socketIOClient(this.state.endpoint);
       socket.emit('msg', {room: "room_" + this.state.tag, text: text.value});
       text.value = '';
@@ -99,9 +99,9 @@ export default class NewsSubItems extends Component {
   }
 
   handleKeyPress = (event) => {
-    if(event.key == 'Enter'){
+    if(event.key === 'Enter'){
       let text = document.getElementById("message_" + this.state.tag);
-      if (text.value != ""){
+      if (text.value !== ""){
         const socket = socketIOClient(this.state.endpoint);
         socket.emit('msg', {room: "room_" + this.state.tag, text: text.value});
         text.value = '';
@@ -149,6 +149,7 @@ export default class NewsSubItems extends Component {
       case (bias <= -1.5 && bias > -2): biasClass = 'bias darkerBlue'; break;
       case (bias <= -2 && bias > -2.5): biasClass = 'bias darkBlue'; break;
       case (bias <= -2.5): biasClass = 'bias darkestBlue'; break;
+      default: break;
     }
 
     var providerList = groupedList.map((pro, index) => <li key={index} className={selectedIndex === index ? 'selected' : null} onClick={this._ToggleSelected.bind(this, index)}><span>{pro.provider} ({pro.articles.length})</span></li>);

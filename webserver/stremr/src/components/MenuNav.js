@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 library.add(faChevronCircleDown);
 library.add(faChevronCircleUp);
 
-class Dropdown extends React.Component {
+class Dropdown extends Component {
     constructor(){
         super();
         
