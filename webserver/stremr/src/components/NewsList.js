@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 //import './App.css';
 import axios from 'axios';
 import NewsSubItems from './NewsSubItems';
-import HashtagTop from './HashtagTop';
 
 class NewsList extends Component {
   constructor(props){
