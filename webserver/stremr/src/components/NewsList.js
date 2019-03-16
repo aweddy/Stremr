@@ -42,7 +42,7 @@ class NewsList extends Component {
     })
     var hashTags = posts.map((item, index) => {
       return (
-        <li key={index}><a href={'#article_'+ index}>
+        <li key={index}><a href={'#' + this.state.category + index}>
         {
           "#" + this.mode(item.combinedTags)
         }
