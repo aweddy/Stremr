@@ -351,6 +351,27 @@ div.articleBlock div.providers li span{
   text-decoration: none;
 }
 
+.messageArea{
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: left;
+  height:100px;
+}
+
+.msgDownArrow{
+  height: 25px;
+  text-align:center;
+  background-color:#eee;
+}
+
+.msgDownArrow svg{
+  margin-top: 5px;
+}
+
+.chatArea{
+  display: none;
+}
+
 @media (max-width: 560px) {
   /* Styles */
   div.articleBlockMain{

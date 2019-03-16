@@ -1,13 +1,47 @@
-require('newrelic');
 var app = require('express')(),fs = require('fs');
-var Comments = require('./schema/comments');
+var server = require('http').createServer(app);
+// var Comments = require('./schema/comments');
 var bodyParser = require('body-parser');
+const io = require('socket.io')(server);
 
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/comments_db', { useNewUrlParser: true })
-.then(() => console.log('connection succesful'))
-.catch((err) => console.error(err));
+server.listen(1337);
+io.set('origins', '*:*');
+
+// var mongoose = require('mongoose');
+// mongoose.Promise = global.Promise;
+// mongoose.connect('mongodb://localhost/comments_db', { useNewUrlParser: true })
+// .then(() => console.log('connection succesful'))
+// .catch((err) => console.error(err));
+
+io.on('connection', (socket) => {
+	console.log('New user connected')
+
+    var room = '';
+	//default username
+	socket.username = "Anonymous"
+
+    //listen on change_username
+    socket.on('change_username', (data) => {
+        socket.username = data.username
+    });
+
+    socket.on('join_room', (data) => {
+        socket.join(data.room);
+    });
+
+    //listen on new_message
+    socket.on('msg', (data) => {
+        //broadcast the new message
+        console.log(data);
+        console.log(data.room)
+        socket.to(data.room).emit('msg', {text: data.text});
+    })
+
+    //listen on typing
+    socket.on('typing', (data) => {
+    	socket.broadcast.emit('typing', {username : socket.username})
+    })
+})
 
 
 app.use(bodyParser.json()); // support json encoded bodies
@@ -32,26 +66,4 @@ app.get('/api/lists/:category', function (req, res) {
     }
 });
 
-app.get('/api/comments/:tags',function(req,res){
-    Comments.find({'tags': {$regex: req.params.tags}}, function (err, comments) {
-        res.send(comments);
-    });
-});
-
-app.get('/api/commentTest', function(req,res){
-    try{
-        var commentData = new Comments({tags:"tag1 tag2 tag3", comments:"na na na  na na", postId: "myID"});
-        commentData.save();
-        res.send("success");
-    }catch(error){
-        res.send(error);
-    }
-});
-
-app.post('/api/comments/', function(req,res){
-    var commentData = new Comments(req.body);
-    commentData.save();
-});
-
-app.listen(1337);
 console.log('Application Started on http://localhost:1337/');

@@ -1,4 +1,3 @@
-require('newrelic');
 let Parser = require('rss-parser');
 let parser = new Parser();
 const extract = require('meta-extractor');
@@ -9,6 +8,9 @@ const fetch = require('node-fetch');
 const {
   performance
 } = require('perf_hooks');
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
 
 Array.prototype.removeIf = function(str) {
   var i = this.length;
@@ -430,4 +432,15 @@ async function createJSON(list, name, variance) {
   // ];
 
   // createJSON(techArr, 'technology.json', 0.5);
+
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("stremr");
+    var myobj = { timeStamp: Date.now(), type: "topNews", articles: topNewsArr};
+    dbo.collection("articles").insertOne(myobj, function(err, res) {
+      if (err) throw err;
+      console.log("--DB--topNews document inserted--DB--");
+      db.close();
+    });
+  });
 })();

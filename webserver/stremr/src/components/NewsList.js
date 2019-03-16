@@ -5,8 +5,12 @@ import NewsSubItems from './NewsSubItems';
 import HashtagTop from './HashtagTop';
 
 class NewsList extends Component {
-  state = {
-    posts: []
+  constructor(props){
+    super(props);
+    this.state = {
+        category: props.category,
+        posts: []
+    }
   }
 
   componentDidMount() {
@@ -31,7 +35,7 @@ class NewsList extends Component {
       return (
         <li key={index}>
         {
-          <NewsSubItems items={item} bias={item.bias} count={index} />
+          <NewsSubItems category={this.props.category} items={item} bias={item.bias} count={index} tag={this.mode(item.combinedTags)} />
         }
         </li>
       )
